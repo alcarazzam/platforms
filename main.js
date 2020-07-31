@@ -28,11 +28,11 @@ function create() {
     this.physics.add.collider(player, coins, takeCoin, null, this);
 
     enemies = this.physics.add.staticGroup();
-    this.physics.add.collider(player, enemies, restart, null, this);
+    this.physics.add.collider(player, enemies, restartGame, null, this);
 
     movingEnemies = this.physics.add.group();
     this.physics.add.collider(movingEnemies, platforms, enemyCollide, null, this);
-    this.physics.add.collider(player, movingEnemies, restart, null, this);
+    this.physics.add.collider(player, movingEnemies, restartGame, null, this);
 
     for (let i = 0; i < level.length; i++) {
         for (let j = 0; j < level[i].length; j++) {
@@ -91,20 +91,12 @@ function takeCoin(player, coin) {
             levelNumber = 0;
         } else
             levelNumber++;
-        nextLevel.call(this);
+        restartGame.call(this);
     }
 }
 
-function restart() {
-    player.setPosition(70, 100);
-
+function restartGame() {
     coinsTaken = 0;
-    coins.children.iterate((coin) => {
-        coin.enableBody(true, coin.x, coin.y, true, true)
-    });
-}
-
-function nextLevel() {
     this.registry.destroy();
     this.events.off();
     this.scene.restart();
